@@ -487,7 +487,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spot: {fileID: 400000, guid: ad80e3aca683745b9bdcfca8dc691801, type: 2}
   matrixSize: 8
-  gridRes: 20
+  gridRes: 40
+  pointGrpRadius: .600000024
 --- !u!4 &1597848028
 Transform:
   m_ObjectHideFlags: 0

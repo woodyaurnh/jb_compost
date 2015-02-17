@@ -17,6 +17,7 @@ public class GMatrixDeform: MonoBehaviour {
 	// deformable mesh params
 	public int matrixSize = 10;
 	public int gridRes = 10;
+	public float pointGrpRadius = 0.6F;
 
 
 	Mesh mesh;
@@ -71,6 +72,8 @@ public class GMatrixDeform: MonoBehaviour {
 			Points[ptIndex] = newPoint;
 		}
 		UpdateMesh();
+		Vector3 newGSPos = new Vector3(gst.position.x, gst.position.y + 0.05f * Time.deltaTime, gst.position.z);
+		gst.position = newGSPos;
 
 	}
 
@@ -97,11 +100,12 @@ public class GMatrixDeform: MonoBehaviour {
 			for (int j = 0; j < gridRes; j++)
 			{
 				curX = -celWidth * j;
-				Debug.Log (ord++ + ": Vert: " + curX + " , " + curZ);
+				//Debug.Log (ord++ + ": Vert: " + curX + " , " + curZ);
 				Points.Add(new Vector3(curX + ctrOffset,0.0f,curZ - ctrOffset));
 				//Points.Add(new Vector3(curX ,0.0f,curZ ));
 				
 				Vector2 curUV = new Vector2((float)i * UVinc, (float)j * UVinc);
+				Debug.Log(" UV: " + curUV);
 				UVs.Add(curUV);
 				
 			}
@@ -143,7 +147,7 @@ public class GMatrixDeform: MonoBehaviour {
 					gs.spotX = i;
 					gs.spotZ = j;
 					gs.meshKey = spotMeshKey++;
-					AssignMeshPoints(gs,1.2F);
+					AssignMeshPoints(gs,pointGrpRadius);
 					//tt.GetChild(0).transform.rotation = Quaternion.Euler(0, Random.Range(0.0F, 360.0F), 0);
 					tt.gameObject.SetActive(true);
 					tt.transform.parent = this.transform;
@@ -156,13 +160,6 @@ public class GMatrixDeform: MonoBehaviour {
 				aIndex++;
 			}
 		}
-
-/*		float scale = targetSize / matrixSize;
-		float offset = ((matrixSize / 2) - 0.5F) * scale;
-		//Debug.Log("offset: " + offset + " scale: " + scale);
-		//this.transform.position = new Vector3(-offset,0,-offset);
-		this.transform.localScale = new Vector3(scale,scale,scale);
-*/
 
 	}
 
@@ -177,7 +174,7 @@ public class GMatrixDeform: MonoBehaviour {
 		for(int i = 0; i < Points.Count; i++){
 			if(Vector3.Distance (gs.transform.position, Points[i]) < groupRadius)
 			{
-				Debug.Log ("Found pt index to assign: " + i);
+				//Debug.Log ("Found pt index to assign: " + i);
 				pIndexList.Add(i);
 			}
 
@@ -406,7 +403,7 @@ public class GMatrixDeform: MonoBehaviour {
 		
 		Verts.Clear();
 		Tris.Clear();
-		UVs.Clear();
+		//UVs.Clear();
 		
 		MeshCollider meshCollider = GetComponent<MeshCollider>();
 		mesh.RecalculateNormals();
@@ -418,6 +415,8 @@ public class GMatrixDeform: MonoBehaviour {
 		meshCollider.sharedMesh = mesh;
 		renderer.material = mat;
 		mesh.Optimize();
+		// bs for breakpt
+		int qwerty = 0;
 	}
 	
 	private static void RecalculateTangents(Mesh mesh)
