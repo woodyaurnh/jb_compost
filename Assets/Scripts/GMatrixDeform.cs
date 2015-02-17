@@ -56,6 +56,23 @@ public class GMatrixDeform: MonoBehaviour {
 		BuildMatrix();
 	}
 
+	void Update(){
+		//chose a gspot, get its point group, transform it
+		Transform gst = _gArray[3];
+		GSpot gs = gst.GetComponent<GSpot>();
+		int key = gs.meshKey;
+		MatrixPtGroup pgrp = ptGrpDict[key];
+		List<int> ptnums = pgrp.ptnums;
+		foreach(int ptIndex in ptnums)
+		{
+			//Debug.Log ("---> " + ptIndex);
+			Vector3 newPoint = Points[ptIndex];
+			newPoint.y += 0.05f * Time.deltaTime;
+			Points[ptIndex] = newPoint;
+		}
+		UpdateMesh();
+
+	}
 
 	// Use this for initialization
 
