@@ -14,12 +14,11 @@ public class GMatrixDeform: MonoBehaviour {
 
 	public Transform spot;
 
-	public int matrixSize = 4;
-
 	// deformable mesh params
-	public int xSize = 10;
-	public int gridRes = 4;
-	
+	public int matrixSize = 10;
+	public int gridRes = 10;
+
+
 	Mesh mesh;
 	Material mat;
 	List<Vector3> Points;
@@ -69,10 +68,10 @@ public class GMatrixDeform: MonoBehaviour {
 		int ord = 1;
 		float curX = 0.0f;
 		float curZ = 0.0f;
-		float celWidth = (float)(xSize )/ (gridRes -1);
+		float celWidth = (float)(matrixSize )/ (gridRes -1);
 		float UVinc = 1.0f / (float)(gridRes - 1);
 		
-		ctrOffset = (float)xSize / 2.0f;
+		ctrOffset = (float)matrixSize / 2.0f;
 		
 		Debug.Log ("UV increment: " + UVinc);
 		
@@ -111,7 +110,7 @@ public class GMatrixDeform: MonoBehaviour {
 	{
 		_gArray = new Transform[matrixSize * matrixSize];
 		Debug.Log ("_gArray Length: " + _gArray.Length);
-		GameObject matrixParent = new GameObject("matrixParent");
+		//GameObject matrixParent = new GameObject("matrixParent");
 		int spotMeshKey = 1;
 		int aIndex = 0;
 		for (int i = 0;i < matrixSize; i++){
@@ -119,7 +118,7 @@ public class GMatrixDeform: MonoBehaviour {
 
 				if(_gArray[aIndex] == null){
 					//Debug.Log ("Melement : " + i + "   " + j + " is null");
-					_gArray[aIndex] = Instantiate(spot,new Vector3(i,0,j),Quaternion.identity) as Transform;
+					_gArray[aIndex] = Instantiate(spot,new Vector3((float)i- ctrOffset + .5f,0,(float)j - ctrOffset + .5f),Quaternion.identity) as Transform;
 					Transform tt = _gArray[aIndex];
 					//Debug.Log (">>> " + _gArray[aIndex].position);
 					tt.name = "Spot_" + i + "_" + j;
@@ -130,7 +129,7 @@ public class GMatrixDeform: MonoBehaviour {
 					AssignMeshPoints(gs,1.2F);
 					//tt.GetChild(0).transform.rotation = Quaternion.Euler(0, Random.Range(0.0F, 360.0F), 0);
 					tt.gameObject.SetActive(true);
-					tt.transform.parent = matrixParent.transform;
+					tt.transform.parent = this.transform;
 
 				}
 				else{
@@ -141,12 +140,12 @@ public class GMatrixDeform: MonoBehaviour {
 			}
 		}
 
-		float scale = 4.0f / matrixSize;
+/*		float scale = targetSize / matrixSize;
 		float offset = ((matrixSize / 2) - 0.5F) * scale;
 		//Debug.Log("offset: " + offset + " scale: " + scale);
-		matrixParent.transform.position = new Vector3(-offset,0,-offset);
-		matrixParent.transform.localScale = new Vector3(scale,scale,scale);
-
+		//this.transform.position = new Vector3(-offset,0,-offset);
+		this.transform.localScale = new Vector3(scale,scale,scale);
+*/
 
 	}
 
