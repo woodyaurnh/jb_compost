@@ -163,7 +163,6 @@ public class Plant : MonoBehaviour {
 		pPlant["curStage"] = _curStage;
 		pPlant.SaveAsync();
 
-
 		}
 		if (stageNumber >= (growStages.Length - 1)){
 			if(!isMature){

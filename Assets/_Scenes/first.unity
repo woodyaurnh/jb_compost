@@ -3172,7 +3172,7 @@ MonoBehaviour:
   gameUI: {fileID: 341582196}
   sunshineIncValue: 1
   sunshineTimeInc: .25
-  gmatrix: {fileID: 2041127913}
+  gmatrix: {fileID: 0}
   plantButtonIndex: -1
   currentSpot: {fileID: 0}
 --- !u!114 &1152651273
@@ -5014,6 +5014,7 @@ MonoBehaviour:
   spotFilled: 0
   spotX: 0
   spotZ: 0
+  meshKey: 0
 --- !u!23 &1732739687
 Renderer:
   m_ObjectHideFlags: 0
@@ -5633,7 +5634,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!23 &1959553830
 Renderer:
   m_ObjectHideFlags: 0
@@ -5773,8 +5774,9 @@ GameObject:
   m_Component:
   - 4: {fileID: 2041127914}
   - 114: {fileID: 2041127913}
+  - 114: {fileID: 2041127915}
   m_Layer: 0
-  m_Name: GardenDIrt
+  m_Name: GMatrix
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5786,7 +5788,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2041127912}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b8499751c4cbfc24faf5b17bcb2633b1, type: 3}
   m_Name: 
@@ -5805,6 +5807,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5
+--- !u!114 &2041127915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2041127912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ad9b8cafdadd4b2c9dcec36af3cb680, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  spot: {fileID: 400000, guid: ad80e3aca683745b9bdcfca8dc691801, type: 2}
+  matrixSize: 8
+  xSize: 10
+  gridRes: 4
 --- !u!1 &2068530928
 GameObject:
   m_ObjectHideFlags: 0

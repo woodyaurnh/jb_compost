@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using Parse;
 using System.Text.RegularExpressions;
+using Parse;
 
-public class matrixPtGroup {
+public class MatrixPtGroup {
 	public List<int> ptnums;
 	public float height;
-	public Vector2 gridPosition;
 }
 
 
@@ -34,8 +33,7 @@ public class GMatrixDeform: MonoBehaviour {
 	// end of deformable mesh params
 
 	// dictionary of matrixPtGroup
-	private Dictionary<int, matrixPtGroup> ptGrpDict;
-
+	private Dictionary<int, MatrixPtGroup> ptGrpDict;
 	private ParseObject[] _ppArray;
 
 	// replace this with a 3D array later
@@ -53,7 +51,10 @@ public class GMatrixDeform: MonoBehaviour {
 		GameManager.Notifications.AddListener (this, "OnPlantsLoaded");
 		GameManager.Notifications.AddListener (this, "OnSpotPicked");
 		_ppArray = new ParseObject[matrixSize * matrixSize];
-		//InitMesh();
+		InitMesh();
+		ptGrpDict = new Dictionary<int,MatrixPtGroup>();
+		// this is temporary, should happen as a result of state change to game state
+		BuildMatrix();
 	}
 
 
@@ -81,8 +82,8 @@ public class GMatrixDeform: MonoBehaviour {
 			{
 				curX = -celWidth * j;
 				Debug.Log (ord++ + ": Vert: " + curX + " , " + curZ);
-				//Points.Add(new Vector3(curX + ctrOffset,0.0f,curZ - ctrOffset));
-				Points.Add(new Vector3(curX ,0.0f,curZ ));
+				Points.Add(new Vector3(curX + ctrOffset,0.0f,curZ - ctrOffset));
+				//Points.Add(new Vector3(curX ,0.0f,curZ ));
 				
 				Vector2 curUV = new Vector2((float)i * UVinc, (float)j * UVinc);
 				UVs.Add(curUV);
@@ -111,6 +112,7 @@ public class GMatrixDeform: MonoBehaviour {
 		_gArray = new Transform[matrixSize * matrixSize];
 		Debug.Log ("_gArray Length: " + _gArray.Length);
 		GameObject matrixParent = new GameObject("matrixParent");
+		int spotMeshKey = 1;
 		int aIndex = 0;
 		for (int i = 0;i < matrixSize; i++){
 			for(int j = 0; j < matrixSize; j++){
@@ -124,6 +126,8 @@ public class GMatrixDeform: MonoBehaviour {
 					GSpot gs = tt.GetComponent<GSpot>();
 					gs.spotX = i;
 					gs.spotZ = j;
+					gs.meshKey = spotMeshKey++;
+					AssignMeshPoints(gs,1.2F);
 					//tt.GetChild(0).transform.rotation = Quaternion.Euler(0, Random.Range(0.0F, 360.0F), 0);
 					tt.gameObject.SetActive(true);
 					tt.transform.parent = matrixParent.transform;
@@ -146,8 +150,35 @@ public class GMatrixDeform: MonoBehaviour {
 
 	}
 
-	void assignMeshPoints(GSpot gs)
+	void AssignMeshPoints(GSpot gs, float groupRadius)
 	{
+		// get spot's x and x pos, find all mesh points in groupRadius from that point
+		Debug.Log("AssignMeshPoints: " + gs.name);
+
+		// make new list to hold ptnums
+		List<int> pIndexList = new List<int>();
+		// get ctr from spot
+		for(int i = 0; i < Points.Count; i++){
+			if(Vector3.Distance (gs.transform.position, Points[i]) < groupRadius)
+			{
+				Debug.Log ("Found pt index to assign: " + i);
+				pIndexList.Add(i);
+			}
+
+		}
+		if(pIndexList.Count > 0){
+			// add list to new matrixPtGroup
+			MatrixPtGroup  mgrp = new MatrixPtGroup();
+			mgrp.ptnums = pIndexList;
+			mgrp.height = 0.0F;
+			ptGrpDict.Add (gs.meshKey,mgrp);
+
+		}
+		else
+		{
+			Debug.LogError("Spot at " + gs.spotX +"," + gs.spotZ + " has no mesh points in radius");
+		}
+
 	}
 
 	public void OnStateChange(Component Sender)

@@ -9,7 +9,7 @@ using Parse;
 //Game Manager requires other manager components
 [RequireComponent (typeof (NotificationsManager))] //Component for sending and receiving notifications
 [RequireComponent (typeof (UserManager))] //Component validating Logins
-[RequireComponent (typeof (GamePanel))] //Component validating Logins
+//[RequireComponent (typeof (GamePanel))] //Component validating Logins
 
 //--------------------------------------------------------------
 public class GameManager : MonoBehaviour
@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 	public int sunshineIncValue = 1;
 	public float sunshineTimeInc = 0.25f;
 
-	public GMatrix gmatrix;
+	public GMatrixDeform gmatrix;
 
 	public int plantButtonIndex = -1;
 
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
 	// Game State 
 	public void SetGameState(GameState newgameState) {
 		gameState = newgameState;
-		Notifications.PostNotification(this, "OnStateChange");
+		//Notifications.PostNotification(this, "OnStateChange");
 	}
 
 
@@ -150,7 +150,6 @@ public class GameManager : MonoBehaviour
 		gameUI.setSunshine(_sunshineAmt.ToString());
 		ParseUser.CurrentUser["sunshine"] = _sunshineAmt;
 		ParseUser.CurrentUser.SaveAsync();
-	
 	}
 
 
@@ -178,7 +177,15 @@ public class GameManager : MonoBehaviour
 		_sunshineAmt = userMgr.GetSunshine();
 		Debug.Log ("starting sunshine is " + _sunshineAmt);
 		// set up UI
-		gameUI.setSunshine(_sunshineAmt.ToString());
+		if(gameUI != null)
+			{
+			gameUI.setSunshine(_sunshineAmt.ToString());
+			}	
+		else
+			{
+			Debug.Log ("No Game UI");
+			}
+
 		//StartCoroutine(IncrementSunshine(0.5f));
 
 	}
@@ -216,12 +223,13 @@ public class GameManager : MonoBehaviour
 
 	}
 
-	void OnApplicationPause(bool paused) {
+/*	void OnApplicationPause(bool paused) {
 		if (paused) ExitGame ();
 		else{
 		}
 
 	}
+*/
 
 	// --------------------------------------
 	//

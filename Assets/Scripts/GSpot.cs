@@ -9,6 +9,8 @@ public class GSpot : MonoBehaviour {
 	public bool spotFilled = false;
 
 	public int spotX,spotZ = 0;
+	public int meshKey;
+
 
 
 
