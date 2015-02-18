@@ -9,7 +9,7 @@ using Parse;
 //Game Manager requires other manager components
 [RequireComponent (typeof (NotificationsManager))] //Component for sending and receiving notifications
 [RequireComponent (typeof (UserManager))] //Component validating Logins
-//[RequireComponent (typeof (GamePanel))] //Component validating Logins
+[RequireComponent (typeof (GamePanel))] //Component validating Logins
 
 //--------------------------------------------------------------
 public class GameManager : MonoBehaviour
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
 	// Game State 
 	public void SetGameState(GameState newgameState) {
 		gameState = newgameState;
-		//Notifications.PostNotification(this, "OnStateChange");
+		Notifications.PostNotification(this, "OnStateChange");
 	}
 
 

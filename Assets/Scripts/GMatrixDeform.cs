@@ -54,11 +54,16 @@ public class GMatrixDeform: MonoBehaviour {
 		InitMesh();
 		ptGrpDict = new Dictionary<int,MatrixPtGroup>();
 		// this is temporary, should happen as a result of state change to game state
-		BuildMatrix();
+		//BuildMatrix();
 	}
 
 	void Update(){
 		//chose a gspot, get its point group, transform it
+
+	}
+
+	private void PtGrpDeformTest()
+	{
 		Transform gst = _gArray[3];
 		GSpot gs = gst.GetComponent<GSpot>();
 		int key = gs.meshKey;
@@ -74,7 +79,6 @@ public class GMatrixDeform: MonoBehaviour {
 		UpdateMesh();
 		Vector3 newGSPos = new Vector3(gst.position.x, gst.position.y + 0.05f * Time.deltaTime, gst.position.z);
 		gst.position = newGSPos;
-
 	}
 
 	// Use this for initialization
@@ -105,7 +109,7 @@ public class GMatrixDeform: MonoBehaviour {
 				//Points.Add(new Vector3(curX ,0.0f,curZ ));
 				
 				Vector2 curUV = new Vector2((float)i * UVinc, (float)j * UVinc);
-				Debug.Log(" UV: " + curUV);
+				//Debug.Log(" UV: " + curUV);
 				UVs.Add(curUV);
 				
 			}
