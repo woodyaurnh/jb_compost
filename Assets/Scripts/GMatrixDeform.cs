@@ -158,7 +158,7 @@ public class GMatrixDeform: MonoBehaviour {
 
 				}
 				else{
-				Debug.Log ("Melement : " + i + "   " + j + "   " + _gArray[aIndex]);
+				//Debug.Log ("Melement : " + i + "   " + j + "   " + _gArray[aIndex]);
 
 				}
 				aIndex++;
@@ -170,7 +170,7 @@ public class GMatrixDeform: MonoBehaviour {
 	void AssignMeshPoints(GSpot gs, float groupRadius)
 	{
 		// get spot's x and x pos, find all mesh points in groupRadius from that point
-		Debug.Log("AssignMeshPoints: " + gs.name);
+		//Debug.Log("AssignMeshPoints: " + gs.name);
 
 		// make new list to hold ptnums
 		List<int> pIndexList = new List<int>();
@@ -223,7 +223,7 @@ public class GMatrixDeform: MonoBehaviour {
 	
 
 	private void FillStoredPlants(){
-		Debug.Log ("GMatrix: FillStoredPlants called");
+		Debug.Log ("GMatrixDeform: FillStoredPlants called");
 		foreach (var pair in GameManager.UserMgr.ppDict){
 			ParseObject po = (ParseObject)pair.Value;
 			string gridKey = (string)pair.Key;
@@ -242,7 +242,7 @@ public class GMatrixDeform: MonoBehaviour {
 			Transform tt = _gArray[(pz % matrixSize ) + (px * matrixSize)];
 			GSpot gs = tt.GetComponent<GSpot>();
 			if (gs != null){
-				Debug.Log ("addplant!!!");
+				Debug.Log ("GMatrixDeform: add plant!!!");
 				gs.AddStoredPlant(po, 0.0F);
 				gs.spotFilled = true;
 			}

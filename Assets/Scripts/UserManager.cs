@@ -227,7 +227,7 @@ public class UserManager : MonoBehaviour {
 	}
 
 	private IEnumerator GetStoredPlants(){
-		Debug.Log ("GMatrix: GetStoredPlants called");
+		Debug.Log ("UserManager: GetStoredPlants called");
 		var query = ParseObject.GetQuery("Plant")
 			.WhereEqualTo("owner", ParseUser.CurrentUser);
 		var queryTask = query.FindAsync().ContinueWith(t =>

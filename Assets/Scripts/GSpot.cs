@@ -50,7 +50,8 @@ public class GSpot : MonoBehaviour {
 	
 			plant = Instantiate(plantArray[plantIdx],transform.position,qr) as Transform;
 			// cheat to fix 2x scale 
-			plant.transform.localScale = new Vector3(plant.transform.localScale.x  * .5F,plant.transform.localScale.y  * .5F,plant.transform.localScale.z  * .5F);
+			//TODO: WTF is up with this scale transform and why
+			//plant.transform.localScale = new Vector3(plant.transform.localScale.x  * .5F,plant.transform.localScale.y  * .5F,plant.transform.localScale.z  * .5F);
 			plant.parent = this.transform;
 			myPlant = plant.GetComponent<Plant>();
 			myPlant.plantIdx = plantIdx;
@@ -76,7 +77,7 @@ public class GSpot : MonoBehaviour {
 		Quaternion rot = Quaternion.Euler(0.0F, yRot,0.0F);
 		plant = Instantiate(plantArray[pIdx],transform.position,rot) as Transform;
 		// cheat to fix 2x scale 
-		plant.transform.localScale = new Vector3(plant.transform.localScale.x  * .5F,plant.transform.localScale.y  * .5F,plant.transform.localScale.z  * .5F);
+		//plant.transform.localScale = new Vector3(plant.transform.localScale.x  * .5F,plant.transform.localScale.y  * .5F,plant.transform.localScale.z  * .5F);
 		plant.parent = this.transform;
 		myPlant = plant.GetComponent<Plant>();
 		myPlant.plantIdx = pIdx;
