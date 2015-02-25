@@ -152,6 +152,10 @@ public class GameManager : MonoBehaviour
 		ParseUser.CurrentUser.SaveAsync();
 	}
 
+	public void OnDigHole()
+	{
+		gmatrix.MovePtGroup(currentSpot,-0.5f);
+	}
 
 
 	//--------------------------------------------------------------

@@ -37,6 +37,7 @@ public class GMatrixDeform: MonoBehaviour {
 	private ParseObject[] _ppArray;
 
 	// replace this with a 3D array later
+	//TODO: change _gArray to list, get GSpots from parse
 	private Transform[] _gArray;
 	private Transform testXform;
 	private bool isStarted = false;
@@ -82,6 +83,25 @@ public class GMatrixDeform: MonoBehaviour {
 	}
 
 	// Use this for initialization
+
+	public void MovePtGroup(GSpot gs, float mvDistance)
+	{
+		int key = gs.meshKey;
+		MatrixPtGroup pgrp = ptGrpDict[key];
+		List<int> ptnums = pgrp.ptnums;
+		foreach(int ptIndex in ptnums)
+		{
+			//Debug.Log ("---> " + ptIndex);
+			Vector3 newPoint = Points[ptIndex];
+			newPoint.y += mvDistance;
+			Points[ptIndex] = newPoint;
+		}
+		UpdateMesh();
+		Vector3 newGSPos = new Vector3(gs.transform.position.x, gs.transform.position.y + mvDistance, gs.transform.position.z);
+		gs.transform.position = newGSPos;
+
+	}
+
 
 	void InitMesh()
 	{
