@@ -202,7 +202,7 @@ public class UserManager : MonoBehaviour {
 			return false;
 	}
 
-	public ParseObject StorePlant(int plantIdx, int x, int z, float yRot)
+	public ParseObject StorePlant(int plantIdx, float x, float z, float yRot)
 	{
 		Debug.Log ("UsrMgr: StorePlant called");
 
@@ -225,6 +225,35 @@ public class UserManager : MonoBehaviour {
 		return pPlant;
 
 	}
+
+	public ParseObject StoreGSpot(Transform gsXform)
+	{
+		Debug.Log ("UsrMgr: StoreGSpot called");
+		if(gsXform == null)
+		{
+			Debug.LogError("UsrMgr:StoreGSpot: Transform arg is null");
+			return null;
+		}
+		GSpot gs = gsXform.GetComponent<GSpot>();
+		if (gs == null)
+		{
+			Debug.LogError("UsrMgr:StoreGSpot: Transform arg has no GSpot component");
+			return null;
+		}
+		
+		ParseObject pGSpot =  new ParseObject("GSpot");
+		pGSpot["owner"] = ParseUser.CurrentUser;
+		pGSpot["index"] = gs.listIndex;
+		pGSpot["x"] = gs.spotX;
+		pGSpot["z"] = gs.spotZ;
+		pGSpot["position"] = gsXform.position;
+		pGSpot["meshKey"] = gs.meshKey;
+
+		Task saveTask = pGSpot.SaveAsync();
+		return pGSpot;
+		
+	}
+
 
 	private IEnumerator GetStoredPlants(){
 		Debug.Log ("UserManager: GetStoredPlants called");

@@ -8,8 +8,9 @@ public class GSpot : MonoBehaviour {
 	public Transform[] plantArray;
 	public bool spotFilled = false;
 
-	public int spotX,spotZ = 0;
+	public float spotX,spotZ = 0.0F;
 	public int meshKey;
+	public int listIndex;
 
 
 

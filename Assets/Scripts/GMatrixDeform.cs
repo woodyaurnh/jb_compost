@@ -19,6 +19,9 @@ public class GMatrixDeform: MonoBehaviour {
 	public int gridRes = 10;
 	public float pointGrpRadius = 0.6F;
 
+	// circle arrangement params
+	public int circleRows = 4;
+
 
 	Mesh mesh;
 	Material mat;
@@ -39,6 +42,10 @@ public class GMatrixDeform: MonoBehaviour {
 	// replace this with a 3D array later
 	//TODO: change _gArray to list, get GSpots from parse
 	private Transform[] _gArray;
+	// here is the NEW list of GSpots
+	private List<Transform> _gsList;
+	private int spotMeshKey = 1;
+
 	private Transform testXform;
 	private bool isStarted = false;
 
@@ -63,6 +70,8 @@ public class GMatrixDeform: MonoBehaviour {
 
 	}
 
+
+	// test function
 	private void PtGrpDeformTest()
 	{
 		Transform gst = _gArray[3];
@@ -156,26 +165,14 @@ public class GMatrixDeform: MonoBehaviour {
 		_gArray = new Transform[matrixSize * matrixSize];
 		Debug.Log ("_gArray Length: " + _gArray.Length);
 		//GameObject matrixParent = new GameObject("matrixParent");
-		int spotMeshKey = 1;
 		int aIndex = 0;
 		for (int i = 0;i < matrixSize; i++){
 			for(int j = 0; j < matrixSize; j++){
 
 				if(_gArray[aIndex] == null){
 					//Debug.Log ("Melement : " + i + "   " + j + " is null");
-					_gArray[aIndex] = Instantiate(spot,new Vector3((float)i- ctrOffset + .5f,0,(float)j - ctrOffset + .5f),Quaternion.identity) as Transform;
-					Transform tt = _gArray[aIndex];
-					//Debug.Log (">>> " + _gArray[aIndex].position);
-					tt.name = "Spot_" + i + "_" + j;
-					GSpot gs = tt.GetComponent<GSpot>();
-					gs.spotX = i;
-					gs.spotZ = j;
-					gs.meshKey = spotMeshKey++;
-					AssignMeshPoints(gs,pointGrpRadius);
-					//tt.GetChild(0).transform.rotation = Quaternion.Euler(0, Random.Range(0.0F, 360.0F), 0);
-					tt.gameObject.SetActive(true);
-					tt.transform.parent = this.transform;
-
+					Vector3 gsPos = new Vector3(i,0,j);
+					InitGspot(aIndex,gsPos);
 				}
 				else{
 				//Debug.Log ("Melement : " + i + "   " + j + "   " + _gArray[aIndex]);
@@ -187,6 +184,34 @@ public class GMatrixDeform: MonoBehaviour {
 
 	}
 
+	void BuildMatrixCircle(){
+		_gsList = new List<Transform>();
+		int listIndex = 0;
+		InitGspot(0, new Vector3(0,0,0));
+
+	}
+
+
+	private void InitGspot(int aIndex, Vector3 xformPos)
+	{
+		float xPos = xformPos.x;
+		float zPos = xformPos.z;
+		_gArray[aIndex] = Instantiate(spot,new Vector3((float)xPos- ctrOffset + .5f,0,(float)zPos - ctrOffset + .5f),Quaternion.identity) as Transform;
+		Transform tt = _gArray[aIndex];
+		//Debug.Log (">>> " + _gArray[aIndex].position);
+		tt.name = "Spot_" + xPos + "_" + zPos;
+		GSpot gs = tt.GetComponent<GSpot>();
+		gs.spotX = xPos;
+		gs.spotZ = zPos;
+		gs.meshKey = spotMeshKey++;
+		AssignMeshPoints(gs,pointGrpRadius);
+		tt.gameObject.SetActive(true);
+		tt.transform.parent = this.transform;
+
+	}
+	
+	
+	
 	void AssignMeshPoints(GSpot gs, float groupRadius)
 	{
 		// get spot's x and x pos, find all mesh points in groupRadius from that point
@@ -282,6 +307,11 @@ public class GMatrixDeform: MonoBehaviour {
 			}
 
 		}
+	}
+
+	//TODO: this should save GSpots AND associated plants to parse in their respective documents
+	public void SaveMatrix()
+	{
 	}
 
 

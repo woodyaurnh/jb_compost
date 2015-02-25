@@ -16,8 +16,8 @@ public class ButtonManager : MonoBehaviour {
 
 	public void OnSpotPicked(Component sender){
 		GSpot gs = (GSpot)sender;
-		int gx = gs.spotX;
-		int gz = gs.spotZ;
+		float gx = gs.spotX;
+		float gz = gs.spotZ;
 		Debug.Log ("ButtonMgr: Spot at " + gx + "," + gz + " picked");
 		NGUITools.SetActive(plantButtons, false);
 		NGUITools.SetActive(actionButtons, false);
