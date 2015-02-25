@@ -172,7 +172,8 @@ public class GMatrixDeform: MonoBehaviour {
 				if(_gArray[aIndex] == null){
 					//Debug.Log ("Melement : " + i + "   " + j + " is null");
 					Vector3 gsPos = new Vector3(i,0,j);
-					InitGspot(aIndex,gsPos);
+					_gArray[aIndex] = InitGspot(aIndex,gsPos);
+
 				}
 				else{
 				//Debug.Log ("Melement : " + i + "   " + j + "   " + _gArray[aIndex]);
@@ -184,20 +185,36 @@ public class GMatrixDeform: MonoBehaviour {
 
 	}
 
-	void BuildMatrixCircle(){
+	void BuildMatrixCircle(int rows){
 		_gsList = new List<Transform>();
 		int listIndex = 0;
 		InitGspot(0, new Vector3(0,0,0));
+		//_gsList.Add(
+		listIndex++;
+		int circsPerRow = 6;
+		for (int i = 0; i < rows; i++)
+		{
+			for(int j = 0; j < circsPerRow; j++)
+			{
+
+			}
+
+
+		}
+
+
 
 	}
 
 
-	private void InitGspot(int aIndex, Vector3 xformPos)
+	private Transform  InitGspot(int aIndex, Vector3 xformPos)
 	{
+
+		//TODO: this function should just return the GO(transform) refactor calling func (BuildMAtrix*) to suit
+		// and NOT put it in th earray or whatever
 		float xPos = xformPos.x;
 		float zPos = xformPos.z;
-		_gArray[aIndex] = Instantiate(spot,new Vector3((float)xPos- ctrOffset + .5f,0,(float)zPos - ctrOffset + .5f),Quaternion.identity) as Transform;
-		Transform tt = _gArray[aIndex];
+		Transform tt  = Instantiate(spot,new Vector3((float)xPos- ctrOffset + .5f,0,(float)zPos - ctrOffset + .5f),Quaternion.identity) as Transform;
 		//Debug.Log (">>> " + _gArray[aIndex].position);
 		tt.name = "Spot_" + xPos + "_" + zPos;
 		GSpot gs = tt.GetComponent<GSpot>();
@@ -207,6 +224,7 @@ public class GMatrixDeform: MonoBehaviour {
 		AssignMeshPoints(gs,pointGrpRadius);
 		tt.gameObject.SetActive(true);
 		tt.transform.parent = this.transform;
+		return tt;
 
 	}
 	

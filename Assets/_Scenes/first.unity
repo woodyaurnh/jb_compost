@@ -4685,6 +4685,7 @@ MonoBehaviour:
   spotX: 0
   spotZ: 0
   meshKey: 0
+  listIndex: 0
 --- !u!23 &1732739687
 Renderer:
   m_ObjectHideFlags: 0
@@ -5489,7 +5490,8 @@ MonoBehaviour:
   spot: {fileID: 400000, guid: ad80e3aca683745b9bdcfca8dc691801, type: 2}
   matrixSize: 8
   gridRes: 20
-  pointGrpRadius: .600000024
+  pointGrpRadius: .75
+  circleRows: 4
 --- !u!1 &2068530928
 GameObject:
   m_ObjectHideFlags: 0
