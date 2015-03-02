@@ -213,6 +213,8 @@ public class UserManager : MonoBehaviour {
 		ParseObject pPlant =  new ParseObject("Plant");
 		pPlant["owner"] = ParseUser.CurrentUser;
 		//pPlant["owner"] = ParseUser.CurrentUser["username"];
+		//TODO: following should be ref to Parse Spot
+		//pPlant["spot"] = GameManager.Instance.currentSpot;
 		pPlant["plantIdx"] = plantIdx;
 		pPlant["x"] = x;
 		pPlant["z"] = z;
@@ -244,9 +246,9 @@ public class UserManager : MonoBehaviour {
 		ParseObject pGSpot =  new ParseObject("GSpot");
 		pGSpot["owner"] = ParseUser.CurrentUser;
 		pGSpot["index"] = gs.listIndex;
-		pGSpot["x"] = gs.spotX;
-		pGSpot["z"] = gs.spotZ;
-		pGSpot["position"] = gsXform.position;
+		pGSpot["posX"] = gsXform.position.x;
+		pGSpot["posY"] = gsXform.position.y;
+		pGSpot["posZ"] = gsXform.position.z;
 		pGSpot["meshKey"] = gs.meshKey;
 
 		Task saveTask = pGSpot.SaveAsync();
@@ -288,5 +290,38 @@ public class UserManager : MonoBehaviour {
 
 	}
 
+	private IEnumerator GetStoredGSpots(){
+		Debug.Log ("UserManager: GetStoredGSpots called");
+		var query = ParseObject.GetQuery("GSpot")
+			.WhereEqualTo("owner", ParseUser.CurrentUser);
+		var queryTask = query.FindAsync().ContinueWith(t =>
+		                                               {
+			if (t.IsFaulted)
+			{
+				Debug.Log ("Parse Error");
+			}
+			else
+			{
+				IEnumerable<ParseObject> results = t.Result;
+				foreach (var obj in results)
+				{
+					var px = obj.Get<int>("x");
+					var pz = obj.Get<int>("z");
+					string plantKey = px + "_" + pz;
+					Debug.Log ("Got pPlant at " + plantKey);
+					ppDict.Add(plantKey,(ParseObject)obj);
+					
+				}
+			}
+			
+		});
+		while(!queryTask.IsCompleted) yield return null;
+		
+		GameManager.Notifications.PostNotification(this,"OnPlantsLoaded");
+		
+		
+		
+	}
+	
 
 }

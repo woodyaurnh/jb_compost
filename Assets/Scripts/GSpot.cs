@@ -8,7 +8,7 @@ public class GSpot : MonoBehaviour {
 	public Transform[] plantArray;
 	public bool spotFilled = false;
 
-	public float spotX,spotZ = 0.0F;
+	//public float spotX,spotZ = 0.0F;
 	public int meshKey;
 	public int listIndex;
 
@@ -56,7 +56,7 @@ public class GSpot : MonoBehaviour {
 			plant.parent = this.transform;
 			myPlant = plant.GetComponent<Plant>();
 			myPlant.plantIdx = plantIdx;
-			myPlant.pPlant = GameManager.UserMgr.StorePlant(plantIdx,spotX,spotZ,randRot);
+			//myPlant.pPlant = GameManager.UserMgr.StorePlant(plantIdx,spotX,spotZ,randRot);
 			myPlant.DoGrow (0.0F);
 			spotFilled = true;
 			GameManager.Notifications.PostNotification(this,"OnPlantPlanted");

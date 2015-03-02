@@ -262,6 +262,7 @@ public void InitFromStored(){
 	}
 
 	public ParseObject StorePlant(){
+		Debug.Log ("Plant:StorePlant");
 		if (pPlant == null){
 			Debug.Log ("Plant:StorePlant: Error! This Plant has no ParseObject pPlant to store");
 		}

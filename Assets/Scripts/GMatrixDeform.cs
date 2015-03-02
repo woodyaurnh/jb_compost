@@ -21,6 +21,7 @@ public class GMatrixDeform: MonoBehaviour {
 
 	// circle arrangement params
 	public int circleRows = 4;
+	public Transform tmpCirc;
 
 
 	Mesh mesh;
@@ -63,6 +64,7 @@ public class GMatrixDeform: MonoBehaviour {
 		ptGrpDict = new Dictionary<int,MatrixPtGroup>();
 		// this is temporary, should happen as a result of state change to game state
 		//BuildMatrix();
+		//BuildMatrixCircle(3);
 	}
 
 	void Update(){
@@ -186,44 +188,61 @@ public class GMatrixDeform: MonoBehaviour {
 	}
 
 	void BuildMatrixCircle(int rows){
+		Debug.Log ("<--------BuildMatrixCircle ----->");
 		_gsList = new List<Transform>();
 		int listIndex = 0;
-		InitGspot(0, new Vector3(0,0,0));
-		//_gsList.Add(
+		// uncomment after numbers are checked
+		Transform tgs = InitGspot(0, new Vector3(0,0,0));
+		_gsList.Add(tgs);
 		listIndex++;
-		int circsPerRow = 6;
+		int newCircsPerRow = 6;
+		float rowOffset = 1.0f;
+		Vector3 curVec = new Vector3(0,0,0);
+		float circRowOffset = 1.0f;
 		for (int i = 0; i < rows; i++)
 		{
-			for(int j = 0; j < circsPerRow; j++)
+			float circPosAngle = 0;
+
+				for(int j = 0; j < newCircsPerRow; j++)
 			{
+				Vector3 pos = new Vector3(0,0,i+1);
+				Vector3 angles = new Vector3(0,j * (360.0F / newCircsPerRow),0);
+				pos = Quaternion.Euler(angles) * pos;
+				Debug.Log ("Pos for spot: " + pos);
+				//Instantiate(tmpCirc,pos, Quaternion.identity);
+				tgs = InitNewGspot(listIndex, pos);
+				_gsList.Add(tgs);
+
 
 			}
-
-
+			newCircsPerRow += 6;
+	
 		}
 
+		Debug.Log ("<--------BuildMatrixCircle End----->");
+
+		           
+		           }
 
 
-	}
-
-
-	private Transform  InitGspot(int aIndex, Vector3 xformPos)
+	private Transform  InitNewGspot(int aIndex, Vector3 xformPos)
 	{
 
-		//TODO: this function should just return the GO(transform) refactor calling func (BuildMAtrix*) to suit
-		// and NOT put it in th earray or whatever
 		float xPos = xformPos.x;
 		float zPos = xformPos.z;
-		Transform tt  = Instantiate(spot,new Vector3((float)xPos- ctrOffset + .5f,0,(float)zPos - ctrOffset + .5f),Quaternion.identity) as Transform;
+		//Transform tt  = Instantiate(spot,new Vector3((float)xPos- ctrOffset + .5f,0,(float)zPos - ctrOffset + .5f),Quaternion.identity) as Transform;
+		Transform tt  = Instantiate(spot,xformPos,Quaternion.identity) as Transform;
 		//Debug.Log (">>> " + _gArray[aIndex].position);
 		tt.name = "Spot_" + xPos + "_" + zPos;
 		GSpot gs = tt.GetComponent<GSpot>();
-		gs.spotX = xPos;
-		gs.spotZ = zPos;
+		//gs.spotX = xPos;
+		//gs.spotZ = zPos;
 		gs.meshKey = spotMeshKey++;
+		gs.listIndex = aIndex;
 		AssignMeshPoints(gs,pointGrpRadius);
 		tt.gameObject.SetActive(true);
 		tt.transform.parent = this.transform;
+		GameManager.UserMgr.StoreGSpot(tt);
 		return tt;
 
 	}
@@ -256,7 +275,7 @@ public class GMatrixDeform: MonoBehaviour {
 		}
 		else
 		{
-			Debug.LogError("Spot at " + gs.spotX +"," + gs.spotZ + " has no mesh points in radius");
+			Debug.LogError("Spot at " + gs.transform.position + " has no mesh points in radius");
 		}
 
 	}
@@ -267,7 +286,11 @@ public class GMatrixDeform: MonoBehaviour {
 		//Debug.Log("state: " + GameManager.Instance.gameState);
 		if (GameManager.Instance.gameState == GameManager.GameState.MainMenu){
 			Debug.Log ("GMatrix OnStateChange: " + GameManager.Instance.gameState);
-			BuildMatrix ();
+			//BuildMatrix ();
+			// Get Spots from parse if user is logged in
+			//
+			//otherwise BuildMatrixCircle
+			BuildMatrixCircle(circleRows);
 
 		}
 	}
@@ -387,7 +410,7 @@ public class GMatrixDeform: MonoBehaviour {
 	}
 
 	void BlankSpots(){
-		foreach (Transform spot in _gArray)
+		foreach (Transform spot in _gsList)
 			spot.renderer.enabled = false;
 	}
 

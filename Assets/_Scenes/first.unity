@@ -5491,7 +5491,8 @@ MonoBehaviour:
   matrixSize: 8
   gridRes: 20
   pointGrpRadius: .75
-  circleRows: 4
+  circleRows: 2
+  tmpCirc: {fileID: 400000, guid: e01dade895c44491498f449dc28e96a6, type: 2}
 --- !u!1 &2068530928
 GameObject:
   m_ObjectHideFlags: 0
